@@ -1,31 +1,42 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { addToCart } from "../../../store/cartSlice";
+import { useDispatch } from "react-redux";
+
 export const ProductsList = () => {
+  const dispatch = useDispatch();
+
   const [products, setProducts] = useState([]);
-  const endPoint = "https://fakestoreapi.com/products";
+
+  let endpoint = "https://fakestoreapi.com/products";
+
   useEffect(() => {
-    const productos = async () => {
-      const getProduct = axios.get(endPoint);
-      const res = await getProduct;
+    const getData = async () => {
+      const getProducts = axios.get(endpoint);
+      let res = await getProducts;
       setProducts(res.data);
     };
-    productos();
-  }, [endPoint]);
+
+    getData();
+  }, [endpoint]);
+
+  console.log(products);
+
   return (
-    <>
-      <h1>ProductsList</h1>
-      <Link to={"/"}>Volver al home</Link>
-      {products ? <h2>hola</h2> : null}
-      {products?.map((elemneto) => {
+    <div>
+      {products.map(({ id, title, image }) => {
         return (
-          <div key={elemneto.id}>
-            <img src={elemneto.image} alt="" />
-            <h2>{elemneto.title}</h2>
-            <h2>{elemneto.price}</h2>
+          <div key={id}>
+            <h2>{title}</h2>
+            <img src={image} alt="" style={{ width: "200px" }} />
+            <button onClick={() => dispatch(addToCart({ id, title, image }))}>
+              Agregar
+            </button>
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
+
+ 
