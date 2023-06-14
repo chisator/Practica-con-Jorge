@@ -1,6 +1,8 @@
-
+import { useContext } from "react";
+import { DarkContext } from "../../context/DarkContext";
 
 const Navbar = () => {
+  const {switchMode} = useContext(DarkContext)
   return (
     <div>
       <ul>
@@ -8,6 +10,7 @@ const Navbar = () => {
         <li>About</li>
         <li>contacto</li>
       </ul>
+      <button onClick={() => switchMode}>Cambiar modo</button>
     </div>
   );
 };
